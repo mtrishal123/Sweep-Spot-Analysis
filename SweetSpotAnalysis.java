@@ -35,8 +35,11 @@ public class SweetSpotAnalysis {
             }
         }
 
+        // Sort strategies based on factors
+        sortStrategies(strategyNames, factorValues, numOfFactors);
+
         // Display the table
-        System.out.println("\nSweet Spot Analysis:");
+        System.out.println("\nStrategy Analysis:");
         // Print header with factor names
         System.out.print("Strategy/Factor\t");
         for (String factorName : factorNames) {
@@ -44,7 +47,7 @@ public class SweetSpotAnalysis {
         }
         System.out.println();
 
-        // Print strategy names and factor values
+        // Print sorted strategy names and factor values
         for (int i = 0; i < numOfStrategies; i++) {
             System.out.print(strategyNames[i] + "\t\t");
             for (int j = 0; j < numOfFactors; j++) {
@@ -54,5 +57,34 @@ public class SweetSpotAnalysis {
         }
 
         scanner.close();
+    }
+
+    public static void sortStrategies(String[] strategyNames, String[][] factorValues, int numOfFactors) {
+        for (int i = 0; i < strategyNames.length - 1; i++) {
+            for (int j = i + 1; j < strategyNames.length; j++) {
+                if (compareStrategies(factorValues[i], factorValues[j], numOfFactors) > 0) {
+                    // Swap strategy names
+                    String tempName = strategyNames[i];
+                    strategyNames[i] = strategyNames[j];
+                    strategyNames[j] = tempName;
+
+                    // Swap factor values
+                    String[] tempValues = factorValues[i];
+                    factorValues[i] = factorValues[j];
+                    factorValues[j] = tempValues;
+                }
+            }
+        }
+    }
+
+    public static int compareStrategies(String[] factors1, String[] factors2, int numOfFactors) {
+        for (int i = 0; i < numOfFactors; i++) {
+            int comparisonResult = factors1[i].compareToIgnoreCase(factors2[i]);
+            if (comparisonResult != 0) {
+                return comparisonResult;
+            }
+        }
+        // If all factors are same, compare by strategy name
+        return factors1[0].compareToIgnoreCase(factors2[0]);
     }
 }
